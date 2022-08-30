@@ -7,6 +7,5 @@ int main(int argc, char** argv) {
   warn("hello %s: %d", "Dalton", 26);
   error("hello %s: %d", "Dalton", 26);
   fatal("hello %s: %d", "Dalton", 101);
-
   return 0;
 }
