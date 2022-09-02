@@ -7,64 +7,64 @@
 #define CONF_LOG_POSTFIX "\n"
 
 #define CONF_LOG_TAG_INCLUDE
-#define CONF_LOG_TAG_INDEX 3
+#define CONF_LOG_TAG_INDEX 1
 
-#define CONF_LOG_TAG_TRACE_PREFIX  "["
-#define CONF_LOG_TAG_TRACE_POSTFIX "]"
+#define CONF_LOG_TAG_TRACE_PREFIX  ""
+#define CONF_LOG_TAG_TRACE_POSTFIX " "
 #define CONF_LOG_TAG_TRACE_TEXT    "TRACE"
-#define CONF_LOG_TAG_TRACE_COLOR   CONF_LOG_RED
-#define CONF_LOG_TAG_TRACE_ATTR    CONF_LOG_BOLD
+#define CONF_LOG_TAG_TRACE_COLOR   CONF_LOG_GREEN
+#define CONF_LOG_TAG_TRACE_ATTR    CONF_LOG_REGULAR
 
-#define CONF_LOG_TAG_DEBUG_PREFIX  "("
-#define CONF_LOG_TAG_DEBUG_POSTFIX ")"
+#define CONF_LOG_TAG_DEBUG_PREFIX  ""
+#define CONF_LOG_TAG_DEBUG_POSTFIX " "
 #define CONF_LOG_TAG_DEBUG_TEXT    "DEBUG"
 #define CONF_LOG_TAG_DEBUG_COLOR   CONF_LOG_GREEN
 #define CONF_LOG_TAG_DEBUG_ATTR    CONF_LOG_BOLD
 
-#define CONF_LOG_TAG_INFO_PREFIX  "*"
-#define CONF_LOG_TAG_INFO_POSTFIX "*"
-#define CONF_LOG_TAG_INFO_TEXT    "inform"
-#define CONF_LOG_TAG_INFO_COLOR   CONF_LOG_BLUE
-#define CONF_LOG_TAG_INFO_ATTR    CONF_LOG_HIGH_INTENSITY
+#define CONF_LOG_TAG_INFO_PREFIX  ""
+#define CONF_LOG_TAG_INFO_POSTFIX "  "
+#define CONF_LOG_TAG_INFO_TEXT    "INFO"
+#define CONF_LOG_TAG_INFO_COLOR   CONF_LOG_YELLOW
+#define CONF_LOG_TAG_INFO_ATTR    CONF_LOG_REGULAR
 
-#define CONF_LOG_TAG_WARN_PREFIX  "^"
-#define CONF_LOG_TAG_WARN_POSTFIX "^"
+#define CONF_LOG_TAG_WARN_PREFIX  ""
+#define CONF_LOG_TAG_WARN_POSTFIX "  "
 #define CONF_LOG_TAG_WARN_TEXT    "WARN"
-#define CONF_LOG_TAG_WARN_COLOR   CONF_LOG_CYAN
-#define CONF_LOG_TAG_WARN_ATTR    CONF_LOG_UNDERLINE
+#define CONF_LOG_TAG_WARN_COLOR   CONF_LOG_YELLOW
+#define CONF_LOG_TAG_WARN_ATTR    CONF_LOG_BOLD
 
 #define CONF_LOG_TAG_ERROR_PREFIX  ""
-#define CONF_LOG_TAG_ERROR_POSTFIX "?"
+#define CONF_LOG_TAG_ERROR_POSTFIX " "
 #define CONF_LOG_TAG_ERROR_TEXT    "ERROR"
-#define CONF_LOG_TAG_ERROR_COLOR   CONF_LOG_PURPLE
+#define CONF_LOG_TAG_ERROR_COLOR   CONF_LOG_RED
 #define CONF_LOG_TAG_ERROR_ATTR    CONF_LOG_HIGH_INTENSITY_BOLD
 
-#define CONF_LOG_TAG_FATAL_PREFIX  "#"
-#define CONF_LOG_TAG_FATAL_POSTFIX "#"
-#define CONF_LOG_TAG_FATAL_TEXT    "fATaL"
-#define CONF_LOG_TAG_FATAL_COLOR   CONF_LOG_GREEN
+#define CONF_LOG_TAG_FATAL_PREFIX  ""
+#define CONF_LOG_TAG_FATAL_POSTFIX " "
+#define CONF_LOG_TAG_FATAL_TEXT    "FATAL"
+#define CONF_LOG_TAG_FATAL_COLOR   CONF_LOG_RED
 #define CONF_LOG_TAG_FATAL_ATTR    CONF_LOG_HIGH_INTENSITY_BACKGROUND
 
 #define CONF_LOG_FILE_INFO_INCLUDE
 #define CONF_LOG_FILE_INFO_INDEX   2
-#define CONF_LOG_FILE_INFO_PREFIX  "["
-#define CONF_LOG_FILE_INFO_POSTFIX "]\t"
-#define CONF_LOG_FILE_INFO_COLOR   CONF_LOG_RED
-#define CONF_LOG_FILE_INFO_ATTR    CONF_LOG_UNDERLINE
+#define CONF_LOG_FILE_INFO_PREFIX  "("
+#define CONF_LOG_FILE_INFO_POSTFIX ") "
+#define CONF_LOG_FILE_INFO_COLOR   CONF_LOG_WHITE
+#define CONF_LOG_FILE_INFO_ATTR    CONF_LOG_REGULAR
 
 #define CONF_LOG_MSG_INCLUDE
-#define CONF_LOG_MSG_INDEX   1
+#define CONF_LOG_MSG_INDEX   3
 #define CONF_LOG_MSG_PREFIX  ""
-#define CONF_LOG_MSG_POSTFIX " --> "
-#define CONF_LOG_MSG_COLOR   CONF_LOG_BLUE
+#define CONF_LOG_MSG_POSTFIX ""
+#define CONF_LOG_MSG_COLOR   CONF_LOG_WHITE
 #define CONF_LOG_MSG_ATTR    CONF_LOG_HIGH_INTENSITY_BOLD
 
 #define CONF_LOG_TIME_INCLUDE
 #define CONF_LOG_TIME_INDEX    0
 #define CONF_LOG_TIME_PREFIX   ""
 #define CONF_LOG_TIME_POSTFIX  " "
-#define CONF_LOG_TIME_COLOR    CONF_LOG_BLUE
-#define CONF_LOG_TIME_ATTR     CONF_LOG_REGULAR
+#define CONF_LOG_TIME_COLOR    CONF_LOG_WHITE
+#define CONF_LOG_TIME_ATTR     CONF_LOG_BOLD
 #define CONF_LOG_TIME_STYLE    "%I:%M:%S"
 #define CONF_LOG_TIME_MAX_SIZE 128
 
@@ -157,7 +157,7 @@
 
 #define CONF_LOG_RESET "\e[0m"
 
-#define CONF_LOG_TIME_TEXT "[TIME]"
+#define CONF_LOG_TIME_TEXT "%s"
 
 #ifndef CONF_LOG_TIME_PREFIX
   #define CONF_LOG_TIME_PREFIX ""
@@ -1514,6 +1514,7 @@
 #endif
 
 #include <stdio.h>
+#include <time.h>
 
 // time, tag, file, msg
 // tag, time, file, msg
@@ -1551,275 +1552,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define trace(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define trace(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define trace(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -1832,275 +1977,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define debug(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define debug(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define debug(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2113,275 +2402,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define info(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define info(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define info(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2394,275 +2827,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define warn(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                 \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                   \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                              \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                           \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define warn(fmt, args...)                                                                                   \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define warn(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2675,275 +3252,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define error(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define error(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define error(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2956,275 +3677,419 @@
   #ifdef CONF_LOG_MSG_INCLUDE
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT  CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (xxxxx_buffer_xxxxx, ##args)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
-        // THIS IS WHERE WE PUT TIMESTAMP :)
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args)
+        // THIS IS WHERE WE PUT TIMESTAMP :) (##args, xxxxx_buffer_xxxxx)
+        #define fatal(fmt, args...)                                                                                                                                                                             \
+          do {                                                                                                                                                                                                  \
+            char xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                                                                                                                    \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                                                                                                               \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx));                                                                                            \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+          } while (0)
       #else
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
     #if CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX  CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
         // THIS IS WHERE WE PUT TIMESTAMP :)
+        #define fatal(fmt, args...)                                                                                  \
+          dochar xxxxx_buffer_xxxxx[CONF_LOG_TIME_MAX_SIZE];                                                         \
+          {                                                                                                          \
+            time_t xxxxx_time_xxxxx = time(NULL);                                                                    \
+            strftime(xxxxx_buffer_xxxxx, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&xxxxx_time_xxxxx)); \
+            printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx)
+      #else; while (0) }
         #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX)
-      #else
-        #define fatal(fmt, args...) \
-         printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          printf(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
