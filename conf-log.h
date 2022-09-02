@@ -74,6 +74,7 @@
 #define CONF_LOG_WARN  3
 #define CONF_LOG_ERROR 4
 #define CONF_LOG_FATAL 5
+#define CONF_LOG_OFF   6
 
 #define CONF_LOG_BLACK  0
 #define CONF_LOG_RED    1
