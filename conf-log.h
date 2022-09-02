@@ -1515,7 +1515,10 @@
 #endif
 
 #include <stdio.h>
-#include <time.h>
+
+#ifdef CONF_LOG_TIME_INCLUDE
+  #include <time.h>
+#endif
 
 // time, tag, file, msg
 // tag, time, file, msg
