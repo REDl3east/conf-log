@@ -6,7 +6,7 @@
 #define CONF_LOG_PREFIX  ""
 #define CONF_LOG_POSTFIX "\n"
 
-#define CONF_LOG_TIME_INCLUDE 
+#define CONF_LOG_TIME_INCLUDE
 #define CONF_LOG_TIME_INDEX    0
 #define CONF_LOG_TIME_PREFIX   ""
 #define CONF_LOG_TIME_POSTFIX  " "
@@ -67,5 +67,10 @@
 #define CONF_LOG_MSG_POSTFIX ""
 #define CONF_LOG_MSG_COLOR   CONF_LOG_WHITE
 #define CONF_LOG_MSG_ATTR    CONF_LOG_HIGH_INTENSITY_BOLD
+
+#define CONF_LOG_PRINT_FUNC(fmt, args...) \
+  printf(fmt, ##args)
+
+#include "conf-log.h"
 
 #endif

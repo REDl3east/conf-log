@@ -1,4 +1,4 @@
-#include "conf-log.h"
+#include "conf-log-conf.h"
 
 int main(int argc, char** argv) {
   trace("hello %s: %d", "Thomas", 62);
