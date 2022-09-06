@@ -6,6 +6,17 @@
 #define CONF_LOG_PREFIX  ""
 #define CONF_LOG_POSTFIX "\n"
 
+#ifndef NDEBUG
+  #define CONF_LOG_TIME_INCLUDE
+  #define CONF_LOG_TIME_INDEX    0
+  #define CONF_LOG_TIME_PREFIX   "["
+  #define CONF_LOG_TIME_POSTFIX  "] "
+  #define CONF_LOG_TIME_STYLE    "%Y-%m-%d %I:%M:%S"
+  #define CONF_LOG_TIME_MAX_SIZE 32
+  #define CONF_LOG_TIME_COLOR    CONF_LOG_WHITE
+  #define CONF_LOG_TIME_ATTR     CONF_LOG_REGULAR
+#endif
+
 #define CONF_LOG_TAG_INCLUDE
 #define CONF_LOG_TAG_INDEX 1
 
@@ -64,17 +75,6 @@
 #ifndef NDEBUG
   #define CONF_LOG_MSG_COLOR CONF_LOG_BLUE
   #define CONF_LOG_MSG_ATTR  CONF_LOG_REGULAR
-#endif
-
-#ifndef NDEBUG
-  #define CONF_LOG_TIME_INCLUDE
-  #define CONF_LOG_TIME_INDEX    0
-  #define CONF_LOG_TIME_PREFIX   ""
-  #define CONF_LOG_TIME_POSTFIX  " "
-  #define CONF_LOG_TIME_STYLE    "%I:%M:%S"
-  #define CONF_LOG_TIME_MAX_SIZE 128
-  #define CONF_LOG_TIME_COLOR    CONF_LOG_WHITE
-  #define CONF_LOG_TIME_ATTR     CONF_LOG_BOLD
 #endif
 
 #define CONF_LOG_PRINT_FUNC(fmt, args...) \
