@@ -68,8 +68,23 @@
 #define CONF_LOG_MSG_COLOR   CONF_LOG_WHITE
 #define CONF_LOG_MSG_ATTR    CONF_LOG_HIGH_INTENSITY_BOLD
 
-#define CONF_LOG_PRINT_FUNC(fmt, args...) \
+#define CONF_LOG_TAG_TRACE_PRINT_FUNC(fmt, args...) \
   printf(fmt, ##args)
+
+#define CONF_LOG_TAG_DEBUG_PRINT_FUNC(fmt, args...) \
+  printf(fmt, ##args)
+
+#define CONF_LOG_TAG_INFO_PRINT_FUNC(fmt, args...) \
+  printf(fmt, ##args)
+
+#define CONF_LOG_TAG_WARN_PRINT_FUNC(fmt, args...) \
+  fprintf(stderr, fmt, ##args)
+
+#define CONF_LOG_TAG_ERROR_PRINT_FUNC(fmt, args...) \
+  fprintf(stderr, fmt, ##args)
+
+#define CONF_LOG_TAG_FATAL_PRINT_FUNC(fmt, args...) \
+  fprintf(stderr, fmt, ##args)
 
 #include "conf-log.h"
 
