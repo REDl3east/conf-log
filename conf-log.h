@@ -1502,8 +1502,33 @@
   time_t buf_name##_time = time(NULL);   \
   strftime(buf_name, CONF_LOG_TIME_MAX_SIZE, CONF_LOG_TIME_STYLE, localtime(&buf_name##_time))
 
-#ifndef CONF_LOG_PRINT_FUNC
-  #define CONF_LOG_PRINT_FUNC(fmt, args...) \
+#ifndef CONF_LOG_TAG_TRACE_PRINT_FUNC
+  #define CONF_LOG_TAG_TRACE_PRINT_FUNC(fmt, args...) \
+      printf(fmt, ##args)
+#endif
+
+#ifndef CONF_LOG_TAG_DEBUG_PRINT_FUNC
+  #define CONF_LOG_TAG_DEBUG_PRINT_FUNC(fmt, args...) \
+      printf(fmt, ##args)
+#endif
+
+#ifndef CONF_LOG_TAG_INFO_PRINT_FUNC
+  #define CONF_LOG_TAG_INFO_PRINT_FUNC(fmt, args...) \
+      printf(fmt, ##args)
+#endif
+
+#ifndef CONF_LOG_TAG_WARN_PRINT_FUNC
+  #define CONF_LOG_TAG_WARN_PRINT_FUNC(fmt, args...) \
+      printf(fmt, ##args)
+#endif
+
+#ifndef CONF_LOG_TAG_ERROR_PRINT_FUNC
+  #define CONF_LOG_TAG_ERROR_PRINT_FUNC(fmt, args...) \
+      printf(fmt, ##args)
+#endif
+
+#ifndef CONF_LOG_TAG_FATAL_PRINT_FUNC
+  #define CONF_LOG_TAG_FATAL_PRINT_FUNC(fmt, args...) \
       printf(fmt, ##args)
 #endif
 
@@ -1515,11 +1540,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1527,11 +1552,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1539,11 +1564,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1551,11 +1576,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1563,11 +1588,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1575,11 +1600,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1587,11 +1612,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1599,11 +1624,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1611,11 +1636,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1623,11 +1648,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1635,11 +1660,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1647,11 +1672,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1659,11 +1684,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1671,11 +1696,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1683,11 +1708,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1695,11 +1720,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1707,11 +1732,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1719,11 +1744,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1731,11 +1756,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1743,11 +1768,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1755,11 +1780,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1767,11 +1792,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1779,11 +1804,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1791,11 +1816,11 @@
         #define trace(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -1805,11 +1830,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1817,11 +1842,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1829,11 +1854,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1841,11 +1866,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1853,11 +1878,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1865,11 +1890,11 @@
         #define trace(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define trace(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_TRACE_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_TRACE_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -1886,11 +1911,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1898,11 +1923,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1910,11 +1935,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1922,11 +1947,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1934,11 +1959,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1946,11 +1971,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1958,11 +1983,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1970,11 +1995,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1982,11 +2007,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -1994,11 +2019,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2006,11 +2031,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2018,11 +2043,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2030,11 +2055,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2042,11 +2067,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2054,11 +2079,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2066,11 +2091,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2078,11 +2103,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2090,11 +2115,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2102,11 +2127,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2114,11 +2139,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2126,11 +2151,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2138,11 +2163,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2150,11 +2175,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2162,11 +2187,11 @@
         #define debug(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -2176,11 +2201,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2188,11 +2213,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2200,11 +2225,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2212,11 +2237,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2224,11 +2249,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2236,11 +2261,11 @@
         #define debug(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define debug(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_DEBUG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_DEBUG_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2257,11 +2282,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2269,11 +2294,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2281,11 +2306,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2293,11 +2318,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2305,11 +2330,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2317,11 +2342,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2329,11 +2354,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2341,11 +2366,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2353,11 +2378,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2365,11 +2390,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2377,11 +2402,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2389,11 +2414,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2401,11 +2426,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2413,11 +2438,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2425,11 +2450,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2437,11 +2462,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2449,11 +2474,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2461,11 +2486,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2473,11 +2498,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2485,11 +2510,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2497,11 +2522,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2509,11 +2534,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2521,11 +2546,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2533,11 +2558,11 @@
         #define info(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -2547,11 +2572,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2559,11 +2584,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2571,11 +2596,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2583,11 +2608,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2595,11 +2620,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_INFO_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2607,11 +2632,11 @@
         #define info(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define info(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_INFO_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2628,11 +2653,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2640,11 +2665,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2652,11 +2677,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2664,11 +2689,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2676,11 +2701,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2688,11 +2713,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2700,11 +2725,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2712,11 +2737,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2724,11 +2749,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2736,11 +2761,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2748,11 +2773,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2760,11 +2785,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2772,11 +2797,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2784,11 +2809,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2796,11 +2821,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2808,11 +2833,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2820,11 +2845,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2832,11 +2857,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2844,11 +2869,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2856,11 +2881,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2868,11 +2893,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2880,11 +2905,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2892,11 +2917,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2904,11 +2929,11 @@
         #define warn(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                 \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                            \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -2918,11 +2943,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2930,11 +2955,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2942,11 +2967,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2954,11 +2979,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2966,11 +2991,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_WARN_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -2978,11 +3003,11 @@
         #define warn(fmt, args...)                                                                                                                \
           do {                                                                                                                                    \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                               \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define warn(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_WARN_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_WARN_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -2999,11 +3024,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3011,11 +3036,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3023,11 +3048,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3035,11 +3060,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3047,11 +3072,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3059,11 +3084,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3071,11 +3096,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3083,11 +3108,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3095,11 +3120,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3107,11 +3132,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3119,11 +3144,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3131,11 +3156,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3143,11 +3168,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3155,11 +3180,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3167,11 +3192,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3179,11 +3204,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3191,11 +3216,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3203,11 +3228,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3215,11 +3240,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3227,11 +3252,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3239,11 +3264,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3251,11 +3276,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3263,11 +3288,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3275,11 +3300,11 @@
         #define error(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -3289,11 +3314,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3301,11 +3326,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3313,11 +3338,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3325,11 +3350,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3337,11 +3362,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3349,11 +3374,11 @@
         #define error(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define error(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_ERROR_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_ERROR_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
@@ -3370,11 +3395,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3382,11 +3407,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3394,11 +3419,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3406,11 +3431,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3418,11 +3443,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3430,11 +3455,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3442,11 +3467,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3454,11 +3479,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3466,11 +3491,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3478,11 +3503,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3490,11 +3515,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3502,11 +3527,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3514,11 +3539,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3526,11 +3551,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3538,11 +3563,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3550,11 +3575,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx, ##args); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3562,11 +3587,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3574,11 +3599,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3586,11 +3611,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3598,11 +3623,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3610,11 +3635,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_MSG_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3622,11 +3647,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3634,11 +3659,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_MSG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_MSG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3646,11 +3671,11 @@
         #define fatal(fmt, args...)                                                                                                                                                                             \
           do {                                                                                                                                                                                                  \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                                                                             \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, ##args, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_MSG_FORMAT_PRE fmt CONF_LOG_MSG_FORMAT_POST CONF_LOG_POSTFIX, ##args)
       #endif
     #endif
   #else
@@ -3660,11 +3685,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3672,11 +3697,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3684,11 +3709,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TIME_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TIME_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3696,11 +3721,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TIME_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_TAG_INDEX < CONF_LOG_FILE_INFO_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3708,11 +3733,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_FILE_INFO_FORMAT CONF_LOG_POSTFIX)
       #endif
     #elif CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TAG_INDEX && CONF_LOG_FILE_INFO_INDEX < CONF_LOG_TIME_INDEX && CONF_LOG_TAG_INDEX < CONF_LOG_TIME_INDEX
       #ifdef CONF_LOG_TIME_INCLUDE
@@ -3720,11 +3745,11 @@
         #define fatal(fmt, args...)                                                                                                                \
           do {                                                                                                                                     \
             CONF_LOG_TIME_FUNC(xxxxx_buffer_xxxxx);                                                                                                \
-            CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
+            CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_TIME_FORMAT CONF_LOG_POSTFIX, xxxxx_buffer_xxxxx); \
           } while (0)
       #else
         #define fatal(fmt, args...) \
-          CONF_LOG_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
+          CONF_LOG_TAG_FATAL_PRINT_FUNC(CONF_LOG_PREFIX CONF_LOG_FILE_INFO_FORMAT CONF_LOG_TAG_FATAL_FORMAT CONF_LOG_POSTFIX)
       #endif
     #endif
   #endif
